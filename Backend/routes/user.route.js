@@ -5,6 +5,7 @@ const User = require('../models/user.model');
 const { initRedisClient } = require('../utils/redis'); 
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../utils/jwt'); 
+const verifyToken = require('../middelwares/auth');
 
 
 
@@ -87,6 +88,14 @@ router.post('/login', async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+  // Protected route
+router.get('/protected', verifyToken, (req, res) => {
+  res.json({
+    message: 'This is protected data',
+    user: req.user  
+  });
+});
 
 module.exports = router;
 

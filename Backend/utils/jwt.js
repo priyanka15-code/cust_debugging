@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 require('dotenv').config();
 
-// Validate and parse environment variables
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const IV = process.env.IV;
 const JWT_SECRET = process.env.JWT_SECRET;
