@@ -8,9 +8,10 @@ require('dotenv').config();
 const { initRedisClient } = require('./utils/redis');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.use(cors({ origin: 'https://6px7hqkq-4200.inc1.devtunnels.ms' }));
-
+const PORT = process.env.PORT ;
+app.use(cors({
+  origin: process.env.ORIGIN
+}));
 // Middleware
 app.use(bodyParser.json());
 

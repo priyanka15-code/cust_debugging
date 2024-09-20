@@ -8,12 +8,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DevLoginComponent } from './dev-login/dev-login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    DevLoginComponent,
     
   ],
   imports: [

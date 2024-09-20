@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { DevLoginComponent } from './dev-login/dev-login.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  {
+    path: 'Login', component:DevLoginComponent
+  },
   {
     path: 'admin-dashboard',
     loadChildren: () =>

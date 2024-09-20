@@ -13,12 +13,13 @@ if (!ENCRYPTION_KEY || !IV || !JWT_SECRET) {
 const ENCRYPTION_KEY_BUFFER = Buffer.from(ENCRYPTION_KEY, 'hex');
 const IV_BUFFER = Buffer.from(IV, 'hex');
 
-const generateToken = (user, accessType) => {
+const generateToken = (user) => {
   const payload = {
-    userId: user._id.toString(),
+    userId: user._id,
     sName: encrypt(user.sName),
     sEmail: encrypt(user.sEmail),
     sAccess: encrypt(user.sAccess),
+    developerId: encrypt(user.developerId)
   };
 
   const options = {

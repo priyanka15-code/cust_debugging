@@ -68,7 +68,7 @@ export class LoginComponent {
         if (response && response.token) {
           const userAccess = response.user.sAccess;
           if (userAccess === 'Admin') {
-            this.router.navigate(['/admin-dashboard']); 
+            this.router.navigate(['/Login']); 
           } else if (userAccess === 'Customer') {
             this.router.navigate(['/dashboard']); 
           }

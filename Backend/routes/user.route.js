@@ -32,6 +32,8 @@ router.post('/', async (req, res) => {
       const hashedPassword = await bcrypt.hash(sPassword, 10);
   
       let developerId = null;
+      let pin = null;
+
   
       // If sAccess is "Admin", generate unique developer ID using Redis
       if (sAccess === "Admin") {
@@ -43,12 +45,33 @@ router.post('/', async (req, res) => {
         const dayOfMonth = String(currentDate.getDate()).padStart(2, '0');
         developerId = `${firstLetter}${developerIdNumber}${dayOfMonth}`;
       }
+
+        // Generate a unique 3-digit PIN followed by a random character
+        const generateUniquePin = async () => {
+          let uniquePin;
+          let isUnique = false;
+  
+          while (!isUnique) {
+            const randomDigits = Math.floor(100 + Math.random() * 900); 
+            const randomChar = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            uniquePin = `${randomDigits}${randomChar}`;
+            const existingPin = await User.findOne({ pin: uniquePin });
+            if (!existingPin) {
+              isUnique = true;
+            }
+          }
+
+        return uniquePin;
+      };
+
+      pin = await generateUniquePin();
       const newUser = new User({
         sName,
         sEmail,
         sPassword: hashedPassword,
         sAccess,
-        developerId 
+        developerId,
+        pin
       });
       await newUser.save();
   
@@ -58,6 +81,32 @@ router.post('/', async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+
+  // dev-login
+router.post('/Login', async(req,res)=>{
+  const { developerId,pin} = req.body;
+  try{
+    const user = await User.findOne({ developerId});
+    if(!user){
+      return res.status(401).json({ message: 'Invalid credentials'});
+    }
+    const token = generateToken(user);
+
+    return res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        developerId: user.developerId,
+        sName: user.sName,
+        sAccess: user.sAccess
+      }
+    });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
   // POST login
 router.post('/login', async (req, res) => {

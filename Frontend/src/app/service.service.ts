@@ -26,6 +26,17 @@ export class ServiceService {
     );
   }
 
+  Login(userdata: any): Observable<any>{
+    return this.http.post(`${this.apiurl}`,userdata).pipe(
+      tap((response: any) => {
+        if(response && response.token){
+          localStorage.setItem('token',response.token);
+          console.log('Admin login success, token saved');
+        }
+      })
+    )
+  }
+
   //Get token from localStorage
   private getToken(): string | null {
     return localStorage.getItem('token');
@@ -34,13 +45,7 @@ export class ServiceService {
   // Attach Authorization header with token
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
-    if (token) {
-      return new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      });
-    } else {
-      return new HttpHeaders();
-    }
+    return token ? new HttpHeaders({ 'Authorization': `Bearer ${token}` }) : new HttpHeaders();
   }
   
 
@@ -52,12 +57,21 @@ export class ServiceService {
   //new product
 
   newProdct(productdata: any): Observable<any>{
-    return this.http.post(`${this.apiurl}/product`,productdata)
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.apiurl}product`,productdata,{ headers })
   }
 
+
+  // get by CustomerID
+
+  getbyIdproduct(): Observable<any>{
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiurl}product/byid`, { headers})
+  }
   // get product
 
   getProduct (): Observable<any>{
-    return this.http.get(`${this.apiurl}/product`)
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiurl}product`,{ headers} )
   }
 }

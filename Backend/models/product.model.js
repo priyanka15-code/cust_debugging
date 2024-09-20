@@ -24,6 +24,11 @@ const productSchema = new mongoose.Schema({
   barcode: { 
     type: String 
     },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+  }
 });
 
 const Product = mongoose.model('Product', productSchema);

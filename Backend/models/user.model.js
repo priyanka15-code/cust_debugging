@@ -24,7 +24,12 @@ const userSchema = new mongoose.Schema({
   developerId: {
     type: String, 
     default: null
+  },
+  pin:{
+    type: String,
+    default:null
   }
+
 });
 
 const User = mongoose.model('User', userSchema);
