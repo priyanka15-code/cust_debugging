@@ -26,12 +26,26 @@ export class ServiceService {
     );
   }
 
-  Login(userdata: any): Observable<any>{
-    return this.http.post(`${this.apiurl}`,userdata).pipe(
+  Login(userdata: any, token?: string): Observable<any> {
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
+    return this.http.post(`${this.apiurl}users/dev-Login`, userdata, { headers }).pipe(
       tap((response: any) => {
-        if(response && response.token){
-          localStorage.setItem('token',response.token);
-          console.log('Admin login success, token saved');
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          console.log('Developer login success, token saved');
+        }
+      })
+    );
+  }
+  // Admin API to login as a customer by their email
+
+  adminlogin(userdata:any,token?:string): Observable<any>{
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
+    return this.http.post(`${this.apiurl}users/admin-login-as-customer`,userdata, {headers}).pipe(
+      tap((response: any) => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          console.log('Developer login in customer dashborad success, token saved');
         }
       })
     )

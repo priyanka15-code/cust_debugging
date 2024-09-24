@@ -16,10 +16,10 @@ const IV_BUFFER = Buffer.from(IV, 'hex');
 const generateToken = (user) => {
   const payload = {
     userId: user._id,
-    sName: encrypt(user.sName),
-    sEmail: encrypt(user.sEmail),
-    sAccess: encrypt(user.sAccess),
-    developerId: encrypt(user.developerId)
+    sName: encrypt(user.sName || ''),
+    sEmail: encrypt(user.sEmail || ''),
+    sAccess: encrypt(user.sAccess || ''),
+    developerId: encrypt(user.developerId || '')
   };
 
   const options = {
@@ -30,6 +30,11 @@ const generateToken = (user) => {
 };
 
 function encrypt(data) {
+  if (!data) {
+    console.error('Attempted to encrypt invalid data:', data);
+    return ''; // Or handle this case as needed
+  }
+
   const algorithm = 'aes-256-cbc';
   const cipher = crypto.createCipheriv(algorithm, ENCRYPTION_KEY_BUFFER, IV_BUFFER);
   let encrypted = cipher.update(data, 'utf8', 'hex');
@@ -37,6 +42,13 @@ function encrypt(data) {
   return encrypted;
 }
 
+function decrypt(data) {
+  const algorithm = 'aes-256-cbc';
+  const decipher = crypto.createDecipheriv(algorithm, ENCRYPTION_KEY_BUFFER, IV_BUFFER);
+  let decrypted = decipher.update(data, 'hex', 'utf8');
+  decrypted += decipher.final('utf8');
+  return decrypted;
+}
 module.exports = {
-  generateToken,
+  generateToken, 
 };
