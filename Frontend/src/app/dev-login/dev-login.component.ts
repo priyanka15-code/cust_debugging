@@ -9,8 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./dev-login.component.css']
 })
 export class DevLoginComponent {
-  developerId = ''; // This can be used later if needed
+  developerId = ''; 
   pin = '';
+  loading = false;  
+
 
   constructor(private api: ServiceService, private router: Router) {}
 
@@ -18,15 +20,14 @@ export class DevLoginComponent {
     const userdata = {
       pin: this.pin
     };
+    this.loading = true;  
 
-    // Retrieve the token from local storage
     const token = localStorage.getItem('token') || '';
 
-    // Call the Login method with userdata and token
     this.api.Login(userdata, token).pipe(
       tap((response: any) => {
+        this.loading = false;  
         if (response && response.token) {
-          // Successful login, navigate to the admin dashboard
           this.router.navigate(['/admin-dashboard']);
         } else {
           console.log('Invalid developer ID or PIN');

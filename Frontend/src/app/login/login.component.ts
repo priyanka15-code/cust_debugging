@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
- import { ServiceService } from '../service.service';
+import { ServiceService } from '../service.service';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
-
+import { environment } from 'src/environment/environment.prod';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   showLogin = true;
-
   sName = '';
-  sEmail ='';
+  sEmail = '';
   sPassword = '';
+  loading = false;  
 
-  constructor(private api: ServiceService,private router: Router) {}
+  constructor(private api: ServiceService, private router: Router) {}
 
   toggleForm() {
     this.showLogin = !this.showLogin;
@@ -24,38 +24,40 @@ export class LoginComponent {
 
   handleFormSubmit() {
     if (this.showLogin) {
-      this.login()
-      console.log('Login form submitted');
+      this.login();
     } else {
-      this.register()
-      console.log('Register form submitted');
-       this.toggleForm(); 
+      this.register();
+      this.toggleForm();
     }
   }
 
-  register(){
-    const userdata ={
+  register() {
+    const userdata = {
       sName: this.sName,
       sEmail: this.sEmail,
       sPassword: this.sPassword,
-   
     };
+
     this.api.register(userdata).subscribe(
-      (response) =>
-      {
-        console.log('register successfull',response);
-      },
+      (response) => {
+        this.log('Register successful', response);
+/*         console.log('Register successful', response);
+ */      },
       (error) => {
-        console.log('register fail',error);
-       }
+        this.log('Register failed', error);
+/*         console.log('Register failed', error);
+ */      }
     );
   }
+
   login() {
     const userdata = {
       sEmail: this.sEmail,
       sPassword: this.sPassword
     };
-  
+
+    this.loading = true;  
+
     this.api.login(userdata).pipe(
       tap((response: any) => {
         if (response && response.token) {
@@ -67,20 +69,28 @@ export class LoginComponent {
       (response) => {
         if (response && response.token) {
           const userAccess = response.user.sAccess;
+          this.loading = false;  
           if (userAccess === 'Admin') {
-            this.router.navigate(['/Login']); 
+            this.router.navigate(['/Login']);
           } else if (userAccess === 'Customer') {
-            this.router.navigate(['/dashboard']); 
+            this.router.navigate(['/dashboard']);
           }
         }
-        console.log('login successful', response);
+        this.log('Login successful', response);
+      /*   console.log('Login successful', response); */
       },
       (error) => {
-        console.log('login failed! please try again', error);
-      }
+        this.loading = false;  
+        this.log('Login failed! Please try again', error);
+/*                 console.log('Login failed! Please try again', error);
+ */      }
     );
   }
-  
 
-
+   // Log messages based on environment
+   private log(message: any, optionalData?: any) {
+    if (!environment.production) {
+      console.log(message, optionalData || '');
+    }
+  }
 }

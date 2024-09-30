@@ -9,15 +9,20 @@ import { Router } from '@angular/router';
 })
 export class AdminDashboardComponent {
   customerEmail: string = '';
+  loading = false;  
+
 
   constructor(private api: ServiceService ,private router: Router){}
 
   onSubmit() {
+    this.loading = true;  
+
     const token = localStorage.getItem('token') || ''; 
     const userData = { customerEmail: this.customerEmail };
 
     this.api.adminlogin(userData, token).subscribe(
       (response) => {
+        this.loading = false;  
         console.log(response);
         this.router.navigate(['/dashboard']); 
       },
