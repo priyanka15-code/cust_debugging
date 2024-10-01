@@ -38,8 +38,8 @@ export class ServiceService {
       })
     );
   }
-  // Admin API to login as a customer by their email
 
+  // Admin API to login as a customer by their email
   adminlogin(userdata:any,token?:string): Observable<any>{
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
     return this.http.post(`${this.apiurl}users/admin-login-as-customer`,userdata, {headers}).pipe(
@@ -50,6 +50,13 @@ export class ServiceService {
         }
       })
     )
+  }
+
+   // get product
+
+   getUser (): Observable<any>{
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiurl}users`,{ headers} )
   }
 
   //Get token from localStorage

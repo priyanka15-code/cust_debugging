@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../service.service';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -9,20 +9,43 @@ import { environment } from 'src/environment/environment.prod';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit  {
   showLogin = true;
   sName = '';
   sEmail = '';
   sPassword = '';
-  loading = false;  
+  loading = false; 
+  passwordManagerActive = false;  
 
   constructor(private api: ServiceService, private router: Router) {}
+
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.checkForAutofill();
+    }, 500);
+  }
+  checkForAutofill() {
+    const emailField = document.querySelector('input[name="sEmail"]') as HTMLInputElement;
+    const passwordField = document.querySelector('input[name="sPassword"]') as HTMLInputElement;
+
+    if (emailField && passwordField) {
+      if (emailField.value && passwordField.value) {
+        this.passwordManagerActive = true;
+        alert('It looks like your browser is prompting to save or autofill your password. Please close the prompt to proceed with login.');
+      }
+    }
+  }
 
   toggleForm() {
     this.showLogin = !this.showLogin;
   }
 
   handleFormSubmit() {
+    if (this.passwordManagerActive) {
+      alert('Please close the password manager prompt and try again.');
+      return;
+    }
     if (this.showLogin) {
       this.login();
     } else {
@@ -40,11 +63,11 @@ export class LoginComponent {
 
     this.api.register(userdata).subscribe(
       (response) => {
-        this.log('Register successful', response);
+        this.api.log('Register successful', );
 /*         console.log('Register successful', response);
  */      },
       (error) => {
-        this.log('Register failed', error);
+        this.api.log('Register failed',);
 /*         console.log('Register failed', error);
  */      }
     );
