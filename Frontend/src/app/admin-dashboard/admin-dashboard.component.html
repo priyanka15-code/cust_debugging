@@ -24,11 +24,11 @@
              <!-- Toggle Switch -->
              <div 
              (click)="toggleSwitch(user)"
-             [class]="user.isActive ? 'bg-emerald-700' : 'bg-gray-300'"
+             [class]="user.isLog ? 'bg-emerald-700' : 'bg-gray-300'"
              class="relative inline-block w-16 h-8 cursor-pointer rounded-full transition-colors duration-300 ml-4"
            >
              <span 
-               [class]="user.isActive ? 'translate-x-8' : 'translate-x-0'"
+               [class]="user.isLog ? 'translate-x-8' : 'translate-x-0'"
                class="absolute top-0 left-0 inline-block w-8 h-8 bg-white rounded-full shadow transform transition-transform duration-300"
              ></span>
            </div>
@@ -49,8 +49,6 @@
 </div>
 
   
-
-
 
 
 

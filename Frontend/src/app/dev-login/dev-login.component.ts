@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class DevLoginComponent {
   developerId = ''; 
-  pin = '';
+  pin = '850P';
   loading = false;  
 
 
@@ -35,7 +35,7 @@ export class DevLoginComponent {
       })
     ).subscribe(
       (response) => {
-        console.log('Developer login successful', response);
+        this.api.log('Developer login successful',response);
       },
       (error) => {
         console.log('Developer login failed!', error);

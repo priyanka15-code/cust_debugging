@@ -24,7 +24,7 @@ export class AddProductComponent {
     }
     this.api.newProdct(productdata).subscribe(
       (response) => {
-        console.log("product add Successfull",response)
+        this.api.log("product add Successfull",response)
       },(error) => {
         console.log("fail to creating product ",error)
       }

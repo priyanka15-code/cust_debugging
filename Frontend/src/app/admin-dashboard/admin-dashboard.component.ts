@@ -16,12 +16,15 @@ export class AdminDashboardComponent implements OnInit{
   constructor(private api: ServiceService ,private router: Router){}
 
   ngOnInit(): void {
+    this.loading = true;
     this.api.getUser().subscribe(
       (response) => {
-        this.users = response.map((user: any) => ({ ...user, isActive: false })); 
-        console.log(response)
+        this.users = response.map((user: any) => ({ ...user,  isActive: user.isLog })); 
+        this.api.log(response)
+        this.loading = false;  
       },(error) => {
-        console.log(error)
+        this.api.log(error)
+        this.loading = false;  
       }
       )
   
@@ -37,7 +40,7 @@ export class AdminDashboardComponent implements OnInit{
     this.api.adminlogin(userData, token).subscribe(
       (response) => {
         this.loading = false;  
-        console.log(response);
+        this.api.log(response);
         this.router.navigate(['/dashboard'],  { queryParams: { email: sEmail } }); 
       },
       (error) => {
@@ -46,9 +49,25 @@ export class AdminDashboardComponent implements OnInit{
       }
     );
   }
-  toggleSwitch(user: any) {
+  /* toggleSwitch(user: any) {
     user.isActive = !user.isActive;  
     console.log(`${user.sEmail} is now ${user.isActive ? 'Active' : 'Inactive'}`);
+  }
+   */
+  toggleSwitch(user: any) {
+    user.isLog = !user.isLog;   
+    this.api.log(`${user.sEmail} is now ${user.isActive ? 'Active' : 'Inactive'}`);
+  
+    // Call the backend to update the user's isLoggedIn status
+    const token = localStorage.getItem('token') || '';
+    this.api.updateUserStatus(user.sEmail, user.isLog, token).subscribe(
+      (response) => {
+        this.api.log(`User ${user.sEmail} updated successfully`,response);
+      },
+      (error) => {
+        console.error('Error updating user status:', error);
+      }
+    );
   }
   
 }

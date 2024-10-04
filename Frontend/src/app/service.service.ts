@@ -9,7 +9,8 @@ import { environment } from '../environment/environment.prod';
 })
 export class ServiceService {
 
-  private apiurl = environment.apiBaseUrl;
+  private apiurl =  environment.apiBaseUrl  /* 'http://localhost:3000/api/' */ ;
+ private isLog: boolean = false;
   constructor(private http: HttpClient) { }
 
   register(userdata: any ):Observable<any>{
@@ -21,6 +22,7 @@ export class ServiceService {
       tap((response: any) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token); 
+          localStorage.setItem('user', JSON.stringify(response.user));
 /*           console.log('Login successful, token saved');
  */        }
       })
@@ -33,6 +35,7 @@ export class ServiceService {
       tap((response: any) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user)); 
 /*           console.log('Developer login success, token saved');
  */        }
       })
@@ -46,6 +49,7 @@ export class ServiceService {
       tap((response: any) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
      /*      console.log('Developer login in customer dashborad success, token saved'); */
         }
       })
@@ -67,21 +71,53 @@ export class ServiceService {
   // Attach Authorization header with token
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
+    
     return token ? new HttpHeaders({ 'Authorization': `Bearer ${token}` }) : new HttpHeaders();
   }
   //console.log show and hidden
-  log(message: any) {
-    if (!environment.production) {
-      console.log(message);
+
+    // Fetch the user from localStorage
+    private getCurrentUser(): any {
+      const userJson = localStorage.getItem('user');
+      return userJson ? JSON.parse(userJson) : null;
+    }
+  
+  log(message: any, response?: any) {
+    // Log the full response for debugging
+/*     console.log('API Response:', response);
+ */    
+    // Get current user to check isLog value
+    const user = this.getCurrentUser();
+    
+    if (user && user.isLog !== undefined) {
+      if (user.isLog === true) {
+        console.log(message);
+      } else {
+        console.log(); 
+      }
+    } else {
+      console.error('Invalid user information received or isLog value is not defined.'); 
     }
   }
+
 
   error(message: any) {
     if (!environment.production) {
       console.error(message);
     }
   }
+  updateUserStatus(sEmail: string, isActive: boolean, token: string): Observable<any> {
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
+    const payload = { sEmail, isActive };
+    
+    return this.http.put(`${this.apiurl}users/update-status`, payload, { headers });
+  }
 
+  setUserLogStatus(user: any) {
+    this.isLog = user.isLog; 
+  }
+
+  
   getProtectedData(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.apiurl}users/protected`, { headers });

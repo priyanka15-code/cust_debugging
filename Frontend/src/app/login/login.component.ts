@@ -12,7 +12,7 @@ import { environment } from 'src/environment/environment.prod';
 export class LoginComponent implements OnInit  {
   showLogin = true;
   sName = '';
-  sEmail = '';
+  sEmail = 'abc@gmail.com';
   sPassword = '';
   loading = false; 
   passwordManagerActive = false;  
@@ -63,13 +63,13 @@ export class LoginComponent implements OnInit  {
 
     this.api.register(userdata).subscribe(
       (response) => {
-        this.api.log('Register successful', );
-/*         console.log('Register successful', response);
- */      },
+        this.api.log('Register successful',response );
+/*          console.log('Register successful', response);
+ */       },
       (error) => {
-        this.api.log('Register failed',);
-/*         console.log('Register failed', error);
- */      }
+        /* this.api.log('Register failed',); */
+         console.log('Register failed', error);
+     }
     );
   }
 
@@ -99,21 +99,15 @@ export class LoginComponent implements OnInit  {
             this.router.navigate(['/dashboard']);
           }
         }
-        this.log('Login successful', response);
+        this.api.log('Login successful', response);
       /*   console.log('Login successful', response); */
       },
       (error) => {
         this.loading = false;  
-        this.log('Login failed! Please try again', error);
+        console.log('Login failed! Please try again', error);
 /*                 console.log('Login failed! Please try again', error);
  */      }
     );
   }
 
-   // Log messages based on environment
-   private log(message: any, optionalData?: any) {
-    if (!environment.production) {
-      console.log(message, optionalData || '');
-    }
-  }
 }

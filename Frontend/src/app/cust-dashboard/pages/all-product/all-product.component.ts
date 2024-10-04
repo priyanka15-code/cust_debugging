@@ -20,10 +20,11 @@ loadproduct(){
   this.loading = true;  
   this.api.getbyIdproduct().subscribe(
     (response: any[]) => {
+      
       this.loading = false;  
-
-      console.log('all product load',response)
-      this.products = response;
+      this.api.log(`load all product successfull`,response);
+/*       console.log('all product load',response)
+ */      this.products = response;
 
     },(error) => {
       console.log('fail to load products',error)
