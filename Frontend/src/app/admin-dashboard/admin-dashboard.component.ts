@@ -20,10 +20,10 @@ export class AdminDashboardComponent implements OnInit{
     this.api.getUser().subscribe(
       (response) => {
         this.users = response.map((user: any) => ({ ...user,  isActive: user.isLog })); 
-        this.api.log(response)
+        this.api.log('log',response)
         this.loading = false;  
       },(error) => {
-        this.api.log(error)
+        this.api.log('error',error)
         this.loading = false;  
       }
       )
@@ -40,7 +40,7 @@ export class AdminDashboardComponent implements OnInit{
     this.api.adminlogin(userData, token).subscribe(
       (response) => {
         this.loading = false;  
-        this.api.log(response);
+        this.api.log('log',response);
         this.router.navigate(['/dashboard'],  { queryParams: { email: sEmail } }); 
       },
       (error) => {
@@ -56,7 +56,7 @@ export class AdminDashboardComponent implements OnInit{
    */
   toggleSwitch(user: any) {
     user.isLog = !user.isLog;   
-    this.api.log(`${user.sEmail} is now ${user.isActive ? 'Active' : 'Inactive'}`);
+    this.api.log(`${user.sEmail} is now ${user.isActive ? 'Active' : 'Inactive'}`,'info');
   
     // Call the backend to update the user's isLoggedIn status
     const token = localStorage.getItem('token') || '';

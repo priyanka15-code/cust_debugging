@@ -22,7 +22,7 @@ loadproduct(){
     (response: any[]) => {
       
       this.loading = false;  
-      this.api.log(`load all product successfull`,response);
+      this.api.log(`load all product successfull`,'info',response);
 /*       console.log('all product load',response)
  */      this.products = response;
 

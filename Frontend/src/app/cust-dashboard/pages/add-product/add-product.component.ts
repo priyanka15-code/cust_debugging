@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ServiceService } from 'src/app/service.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class AddProductComponent {
   pPrice = ''
   pQuantity = ''
 
-  constructor( private api: ServiceService ){}
+  constructor( private api: ServiceService,private router: Router ){}
 
   addproduct(){
     const productdata = {
@@ -24,7 +25,8 @@ export class AddProductComponent {
     }
     this.api.newProdct(productdata).subscribe(
       (response) => {
-        this.api.log("product add Successfull",response)
+        console.log("product add Successfull",response)
+        this.router.navigate(['/dashboard/all-product'])
       },(error) => {
         console.log("fail to creating product ",error)
       }

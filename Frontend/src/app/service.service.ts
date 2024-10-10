@@ -82,30 +82,37 @@ export class ServiceService {
       return userJson ? JSON.parse(userJson) : null;
     }
   
-  log(message: any, response?: any) {
-    // Log the full response for debugging
-/*     console.log('API Response:', response);
- */    
-    // Get current user to check isLog value
-    const user = this.getCurrentUser();
-    
-    if (user && user.isLog !== undefined) {
-      if (user.isLog === true) {
-        console.log(message);
+    log(message: any, type: 'log' | 'warn' | 'info' | 'error', response?: any) {
+      const user = this.getCurrentUser();
+      
+      if (user && user.isLog !== undefined) {
+        if (user.isLog === true) {
+          switch (type) {
+            case 'log':
+              console.log(message);
+              if (response) console.log('Response:', response);
+              break;
+            case 'warn':
+              console.warn(message);
+              break;
+            case 'info':
+              console.info(message);
+              break;
+            case 'error':
+              console.error(message);
+              if (response) console.error('Response:', response);
+              break;
+            default:
+              console.log(message);
+          }
+        } else {
+          console.log(); 
+        }
       } else {
         console.log(); 
       }
-    } else {
-      console.error('Invalid user information received or isLog value is not defined.'); 
     }
-  }
-
-
-  error(message: any) {
-    if (!environment.production) {
-      console.error(message);
-    }
-  }
+ 
   updateUserStatus(sEmail: string, isActive: boolean, token: string): Observable<any> {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
     const payload = { sEmail, isActive };

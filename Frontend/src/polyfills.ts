@@ -1,5 +1,8 @@
-import { environment } from './environment/environment';
+import { environment } from './environment/environment.prod';
+/* import { environment } from './environment/environment';
+ */
 
+export function disableConsoleInProduction() {
 if (environment.production) {
   (function () {
     const noop = function () {};
@@ -9,4 +12,5 @@ if (environment.production) {
       (console as any)[method] = noop; 
     });
   })();
+}
 }
