@@ -20,7 +20,7 @@ export class ServiceService {
   login(userdata: any): Observable<any>{
     return this.http.post(`${this.apiurl}users/login`,userdata).pipe(
       tap((response: any) => {
-        if (response && response.token) {
+        if (response && response.token && !response.user.isLog) {
           localStorage.setItem('token', response.token); 
           localStorage.setItem('user', JSON.stringify(response.user));
 /*           console.log('Login successful, token saved');
@@ -33,7 +33,7 @@ export class ServiceService {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
     return this.http.post(`${this.apiurl}users/dev-Login`, userdata, { headers }).pipe(
       tap((response: any) => {
-        if (response && response.token) {
+        if (response && response.token && !response.user.isLog) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user)); 
 /*           console.log('Developer login success, token saved');
@@ -47,7 +47,7 @@ export class ServiceService {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
     return this.http.post(`${this.apiurl}users/admin-login-as-customer`,userdata, {headers}).pipe(
       tap((response: any) => {
-        if (response && response.token) {
+        if (response && response.token && !response.user.isLog) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
      /*      console.log('Developer login in customer dashborad success, token saved'); */

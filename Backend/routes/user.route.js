@@ -121,7 +121,9 @@ router.post('/dev-Login', async (req, res) => {
       user: {
         developerId: user.developerId,
         sName: user.sName,
-        sAccess: user.sAccess
+        sAccess: user.sAccess,
+        isLog: user.isLog
+
       }
     });
   } catch (error) {
@@ -195,8 +197,8 @@ router.post('/login', async (req, res) => {
       message: 'Login successful',
       token,
       user: {
-        developerId: user.developerId,
-        sName: user.sName,
+/*         developerId: user.developerId,
+ */        sName: user.sName,
         sEmail: user.sEmail,
         sAccess: user.sAccess,
         isLog:user.isLog
