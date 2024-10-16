@@ -1,45 +1,50 @@
 <div class="container mx-auto px-4 py-8">
-    
-    <h1 class="text-3xl font-bold text-center bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-900 mb-6">Product List</h1>
+  <h1
+    class="text-3xl font-bold text-center bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-900 mb-6"
+  >
+    Product List
+  </h1>
 
-    <div *ngIf="products.length > 0; else noProducts">
-        <table class="min-w-full bg-white border border-gray-100 shadow-lg">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="py-2 px-4 border-b text-left">Product ID</th>
-                    <th class="py-2 px-4 border-b text-left">Product Name</th>
-                    <th class="py-2 px-4 border-b text-left">Description</th>
-                    <th class="py-2 px-4 border-b text-left">Price</th>
-                    <th class="py-2 px-4 border-b text-left">Quantity</th>
-                    <th class="py-2 px-4 border-b text-left">Barcode</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let product of products" class="hover:bg-gray-50">
-                    <td class="py-2 px-4 border-b">{{ product.pId }}</td>
-                    <td class="py-2 px-4 border-b">{{ product.pName }}</td>
-                    <td class="py-2 px-4 border-b">{{ product.pDescription }}</td>
-                    <td class="py-2 px-4 border-b">{{ product.pPrice }}</td>
-                    <td class="py-2 px-4 border-b">{{ product.pQuantity }}</td>
-                    <td class="py-2 px-4 border-b">
-                        <div *ngIf="product.barcode" class="relative">
-                            <img 
-                                [src]="product.barcode" 
-                                alt="Barcode for {{ product.pName }}" 
-                                class="w-16 h-auto transition-transform duration-300 ease-in-out transform hover:scale-150"
-                            />
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <div *ngIf="products.length > 0; else noProducts">
+    <table class="min-w-full bg-white border border-gray-100 shadow-lg">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="py-2 px-4 border-b text-left">Product ID</th>
+          <th class="py-2 px-4 border-b text-left">Product Name</th>
+          <th class="py-2 px-4 border-b text-left">Description</th>
+          <th class="py-2 px-4 border-b text-left">Price</th>
+          <th class="py-2 px-4 border-b text-left">Quantity</th>
+          <th class="py-2 px-4 border-b text-left">Barcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products" class="hover:bg-gray-50">
+          <td class="py-2 px-4 border-b">{{ product.pId }}</td>
+          <td class="py-2 px-4 border-b">{{ product.pName }}</td>
+          <td class="py-2 px-4 border-b">{{ product.pDescription }}</td>
+          <td class="py-2 px-4 border-b">{{ product.pPrice }}</td>
+          <td class="py-2 px-4 border-b">{{ product.pQuantity }}</td>
+          <td class="py-2 px-4 border-b">
+            <div *ngIf="product.barcode" class="relative">
+              <img
+                [src]="product.barcode"
+                alt="Barcode for {{ product.pName }}"
+                class="w-16 h-auto transition-transform duration-300 ease-in-out transform hover:scale-150"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Define the ng-template with the reference 'noProducts' -->
+  <ng-template #noProducts>
+    <div *ngIf="loading" class="flex justify-center mb-4">
+      <div
+        class="w-36 h-36 border-4 border-t-emerald-700 border-emerald-200 rounded-full animate-spin"
+      ></div>
     </div>
-
-    <!-- Define the ng-template with the reference 'noProducts' -->
-    <ng-template #noProducts>
-        <div *ngIf="loading" class="flex justify-center mb-4">
-            <div class="w-36 h-36 border-4 border-t-emerald-700 border-emerald-200 rounded-full animate-spin"></div>
-        </div>
-        <p class="text-center text-gray-500 mt-8">No products available.</p>
-    </ng-template>
+    <p class="text-center text-gray-500 mt-8">No products available.</p>
+  </ng-template>
 </div>

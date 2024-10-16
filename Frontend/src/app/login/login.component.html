@@ -1,17 +1,26 @@
 <div class="flex items-center justify-center min-h-screen">
   <!-- Show loader if login is in progress -->
   <div *ngIf="loading" class="flex justify-center mb-4">
-    <div class="w-36 h-36 border-4 border-t-emerald-700 border-emerald-200 rounded-full animate-spin"></div>
+    <div
+      class="w-36 h-36 border-4 border-t-emerald-700 border-emerald-200 rounded-full animate-spin"
+    ></div>
   </div>
 
-  <div [class.hidden]="loading" class="bg-gradient-to-b from-emerald-50 to-emerald-200 p-8 rounded-lg drop-shadow-lg max-w-sm w-full">
-    <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-900 mb-8 text-center">
-      {{ showLogin ? 'Login' : 'Register' }}
+  <div
+    [class.hidden]="loading"
+    class="bg-gradient-to-b from-emerald-50 to-emerald-200 p-8 rounded-lg drop-shadow-lg max-w-sm w-full"
+  >
+    <h1
+      class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-900 mb-8 text-center"
+    >
+      {{ showLogin ? "Login" : "Register" }}
     </h1>
 
     <form (ngSubmit)="handleFormSubmit()" #form="ngForm">
       <div *ngIf="!showLogin" class="mb-4 relative">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <span
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
           <i class="fas fa-user text-emerald-700"></i>
         </span>
         <input
@@ -19,14 +28,15 @@
           name="sName"
           [(ngModel)]="sName"
           placeholder="Enter Name"
-          autocomplete="off"  
+          autocomplete="off"
           class="w-full p-3 pl-10 border bg-gray-50 shadow-inner border-gray-300 rounded-lg focus:outline-none focus:border-emerald-700"
-         
         />
       </div>
 
       <div class="mb-4 relative">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <span
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
           <i class="fas fa-envelope text-emerald-700"></i>
         </span>
         <input
@@ -34,21 +44,22 @@
           name="sEmail"
           [(ngModel)]="sEmail"
           placeholder="Enter Email"
-          autocomplete="off"  
+          autocomplete="off"
           class="w-full p-3 pl-10 border bg-gray-50 shadow-inner border-gray-300 rounded-lg focus:outline-none focus:border-emerald-700"
-         
         />
       </div>
 
       <div class="mb-6 relative">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <span
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
           <i class="fas fa-lock text-emerald-700"></i>
         </span>
         <input
           type="password"
           name="sPassword"
           [(ngModel)]="sPassword"
-          autocomplete="off"  
+          autocomplete="off"
           placeholder="Enter Password"
           class="w-full p-3 pl-10 border bg-gray-50 shadow-inner border-gray-300 rounded-lg focus:outline-none focus:border-emerald-700"
         />
@@ -59,15 +70,25 @@
         class="relative w-full text-lg text-white font-bold bg-emerald-700 hover:bg-emerald-800 transition-transform transform p-4 rounded-lg overflow-hidden"
         [disabled]="loading"
       >
-        <span class="label relative z-10 tracking-wide">{{ showLogin ? 'Login' : 'Register' }}</span>
-        <span class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-600 opacity-30 pointer-events-none rounded-lg"></span>
+        <span class="label relative z-10 tracking-wide">{{
+          showLogin ? "Login" : "Register"
+        }}</span>
+        <span
+          class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-600 opacity-30 pointer-events-none rounded-lg"
+        ></span>
       </button>
 
       <div class="mt-4 text-end">
         <p class="text-sm text-gray-600 text-end">
-          {{ showLogin ? "Don't have an account?" : 'Already have an account?' }}
-          <a href="javascript:void(0)" (click)="toggleForm()" class="text-emerald-700 hover:text-emerald-900 font-bold">
-            {{ showLogin ? 'Go to Register' : 'Go to Login' }}
+          {{
+            showLogin ? "Don't have an account?" : "Already have an account?"
+          }}
+          <a
+            href="javascript:void(0)"
+            (click)="toggleForm()"
+            class="text-emerald-700 hover:text-emerald-900 font-bold"
+          >
+            {{ showLogin ? "Go to Register" : "Go to Login" }}
           </a>
         </p>
       </div>

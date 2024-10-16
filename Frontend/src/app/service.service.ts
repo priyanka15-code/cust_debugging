@@ -77,7 +77,7 @@ export class ServiceService {
   //console.log show and hidden
 
     // Fetch the user from localStorage
-    private getCurrentUser(): any {
+   /*  private getCurrentUser(): any {
       const userJson = localStorage.getItem('user');
       return userJson ? JSON.parse(userJson) : null;
     }
@@ -111,7 +111,7 @@ export class ServiceService {
       } else {
         console.log(); 
       }
-    }
+    } */
  
   updateUserStatus(sEmail: string, isActive: boolean, token: string): Observable<any> {
     const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();

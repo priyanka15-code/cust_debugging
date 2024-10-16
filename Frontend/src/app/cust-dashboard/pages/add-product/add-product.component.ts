@@ -5,32 +5,31 @@ import { ServiceService } from 'src/app/service.service';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.css']
+  styleUrls: ['./add-product.component.css'],
 })
 export class AddProductComponent {
+  pName = '';
+  pDescription = '';
+  pPrice = '';
+  pQuantity = '';
 
-  pName = ''
-  pDescription = ''
-  pPrice = ''
-  pQuantity = ''
+  constructor(private api: ServiceService, private router: Router) {}
 
-  constructor( private api: ServiceService,private router: Router ){}
-
-  addproduct(){
+  addproduct() {
     const productdata = {
       pName: this.pName,
       pDescription: this.pDescription,
       pPrice: this.pPrice,
-      pQuantity: this.pQuantity
-    }
+      pQuantity: this.pQuantity,
+    };
     this.api.newProdct(productdata).subscribe(
       (response) => {
-        console.log("product add Successfull",response)
-        this.router.navigate(['/dashboard/all-product'])
-      },(error) => {
-        console.log("fail to creating product ",error)
+        console.log('product add Successfull', response);
+        this.router.navigate(['/dashboard/all-product']);
+      },
+      (error) => {
+        console.log('fail to creating product ', error);
       }
-    )
+    );
   }
-
 }
