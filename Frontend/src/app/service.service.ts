@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../environment/environment.prod';
 
@@ -9,8 +9,9 @@ import { environment } from '../environment/environment.prod';
 })
 export class ServiceService {
 
-  private apiurl =  environment.apiBaseUrl  /* 'http://localhost:3000/api/' */ ;
+  private apiurl =   environment.apiBaseUrl   /*  'http://localhost:3200/api/' ; */
  private isLog: boolean = false;
+ 
   constructor(private http: HttpClient) { }
 
   register(userdata: any ):Observable<any>{
@@ -150,4 +151,11 @@ export class ServiceService {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.apiurl}product`,{ headers} )
   }
+
+// search product 
+  searchProducts(searchText: string): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    const params = new HttpParams().set('text', searchText);
+    return this.http.get<any[]>(`${this.apiurl}product/search`, { params ,headers });
+}
 }
